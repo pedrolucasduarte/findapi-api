@@ -1,5 +1,7 @@
 package com.findapi.api.codeExample.controller;
 
-public class CodeExampleController {
+import com.findapi.api.codeExample.controller.swagger.CodeExampleControllerSwagger;
+
+public class CodeExampleController implements CodeExampleControllerSwagger {
     // TODO: Add code example endpoints later.
 }

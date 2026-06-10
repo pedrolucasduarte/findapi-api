@@ -1,39 +1,64 @@
-# FindApi project structure
+# FindApi Project Structure
 
-## Objective
+## Overview
 
-This structure creates the initial package layout for FindApi as a modular monolith. It is intentionally minimal: no business rules, no functional controllers, no complete DTOs, no repository queries, and no JPA entity mappings are implemented yet.
+FindApi is organized as a modular monolith. Each business capability owns its
+controllers, services, repositories, specifications, mappers, and DTOs, while
+JPA entities and shared enums remain centralized.
 
-## Why Modular Monolith
+```text
+src/main/java/com/findapi/api
+|-- Application.java
+|-- apiCatalog/
+|-- authenticationMethod/
+|-- category/
+|-- codeExample/
+|-- collection/
+|-- common/
+|-- dashboard/
+|-- entity/
+|-- enums/
+|-- pricing/
+|-- rankings/
+|-- review/
+|-- search/
+|-- security/
+|-- tag/
+`-- user/
+```
 
-FindApi can start as one deployable Spring Boot application while keeping clear business boundaries inside the codebase. This keeps the MVP simple to run, test, and deploy, while making future extraction or deeper module isolation easier if the product grows.
+## Package Responsibilities
 
-## Why Centralized Entities
+- `apiCatalog`: API catalog CRUD, filtering, details, review statistics, and
+  category/tag relationships.
+- `authenticationMethod`: authentication method catalog management.
+- `category`: category taxonomy management.
+- `codeExample`: JPA foundation and placeholder structure for a future REST
+  API. This module does not expose functional endpoints yet.
+- `collection`: user-owned collections and collection/API relationships.
+- `common`: shared configuration, exceptions, pagination, and utilities.
+- `dashboard`: aggregate catalog statistics.
+- `entity`: centralized JPA mappings aligned with the Flyway schema.
+- `enums`: enum values aligned with database constraints.
+- `pricing`: pricing plans associated with APIs.
+- `rankings`: public API rankings.
+- `review`: user reviews, ratings, and aggregate statistics.
+- `search`: paginated API discovery with composed specifications.
+- `security`: JWT conversion, role authorities, ownership checks, and HTTP
+  authorization.
+- `tag`: tag catalog management.
+- `user`: authenticated profile and administrative user queries.
 
-Entities are kept under `entity` for the first phase because the database model is shared by several catalog features. Centralizing them avoids premature duplication while the domain model is still stabilizing. Module packages can still own controllers, services, repositories, mappers, and DTOs.
+## Conventions
 
-## Module Responsibilities
+- Controllers expose versioned REST endpoints and never return JPA entities.
+- Services contain transactional application behavior.
+- Repositories use Spring Data JPA and specifications.
+- MapStruct maps entities to response DTOs.
+- Flyway owns schema evolution; Hibernate validates the resulting schema.
+- Soft deletion is represented by `deleted_at`.
+- Tests use JUnit 5, Mockito, Spring Security Test, and PostgreSQL
+  Testcontainers.
 
-- `common`: shared configuration, exception types, response envelopes, pagination helpers, and utilities.
-- `security`: future authentication, authorization, and JWT integration.
-- `entity`: future JPA entity classes that map to the FindApi database schema.
-- `enums`: shared enum values aligned with database constraints and domain language.
-- `apiCatalog`: API catalog search, filtering, details, and comparison use cases.
-- `category`: category taxonomy for organizing APIs.
-- `tag`: flexible labels used for API discovery and filtering.
-- `authenticationMethod`: authentication method catalog used by APIs.
-- `pricing`: pricing plan information for APIs.
-- `codeExample`: integration examples by API and language.
-- `review`: user reviews and ratings for APIs.
-- `collection`: user-created groups of APIs.
-- `user`: user profile and account-related application boundaries.
-
-## Next Steps
-
-1. Add JPA mappings for entities, aligned with the existing Flyway schema.
-2. Decide module package conventions and optional Spring Modulith annotations.
-3. Add repositories extending Spring Data only after entities are mapped.
-4. Define DTO fields per use case.
-5. Add service contracts and business rules incrementally.
-6. Add controllers only when endpoint behavior is specified.
-7. Add tests per module as behavior is introduced.
+For deeper details, see [architecture.md](architecture.md),
+[modules.md](modules.md), and [security.md](security.md).

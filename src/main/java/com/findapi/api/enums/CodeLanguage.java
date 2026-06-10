@@ -1,11 +1,13 @@
 package com.findapi.api.enums;
 
 public enum CodeLanguage {
-    JAVA,
-    JAVASCRIPT,
-    TYPESCRIPT,
-    PYTHON,
-    PHP,
     CURL,
-    OTHER
+    JAVA,
+    SPRING,
+    JAVASCRIPT,
+    NODEJS,
+    PYTHON,
+    ANGULAR,
+    REACT,
+    FLUTTER
 }

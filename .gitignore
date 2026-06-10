@@ -23,12 +23,16 @@ HELP.md
 *.swp
 *.swo
 *.pid
+hs_err_pid*
+replay_pid*
 
 ### Maven / build ###
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.scannerwork/
+dependency-check-data/
 
 ### STS ###
 .apt_generated
